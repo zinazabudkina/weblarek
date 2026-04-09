@@ -25,12 +25,7 @@ export interface IBuyer {
   address: string;
 }
 
-export type ValidationErrors = Partial<{
-  payment: string;
-  email: string;
-  phone: string;
-  address: string;
-}>;
+export type ValidationErrors = Partial<Record<keyof IBuyer, string>>;
 
 export type TPayment = "card" | "cash" | "";
 

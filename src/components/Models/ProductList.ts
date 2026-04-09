@@ -1,10 +1,10 @@
-import { IProduct } from "../../../types/index.ts";
+import { IProduct } from "../../types/index.ts";
 
 export class ProductList {
-  productList!: IProduct[];
-  productItem!: IProduct | null;
+  private productList: IProduct[] = [];
+  private productItem: IProduct | null = null;
 
-/*  constructor(productList: IProduct[], productItem: IProduct | null) {
+  /*  constructor(productList: IProduct[], productItem: IProduct | null) {
     this.productList = productList;
     this.productItem = productItem;
   }*/
@@ -14,11 +14,11 @@ export class ProductList {
   }
 
   getProductList(): IProduct[] {
-    return this.productList; 
+    return this.productList;
   }
 
   getProductById(id: string): IProduct | undefined {
-    return this.productList.find(item => item.id === id);
+    return this.productList.find((item) => item.id === id);
   }
 
   setSelectedProduct(item: IProduct): void {
@@ -29,4 +29,3 @@ export class ProductList {
     return this.productItem;
   }
 }
-

@@ -1,4 +1,4 @@
-import { IApi, IServer, IOrderResponce, IOrder } from "../../types/index.ts";
+import { IApi, IServer, IOrderResponce, IOrder } from "../types/index.ts";
 
 export class ServerCommunication {
   api: IApi;

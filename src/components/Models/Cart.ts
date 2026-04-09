@@ -1,7 +1,7 @@
-import { IProduct } from "../../../types/index.ts";
+import { IProduct } from "../../types/index.ts";
 
 export class Cart {
-  purchasedProductList: IProduct[];
+  private purchasedProductList: IProduct[];
 
   constructor() {
     this.purchasedProductList = [];
@@ -17,7 +17,7 @@ export class Cart {
 
   deletePurchasedProduct(item: IProduct): void {
     this.purchasedProductList = this.purchasedProductList.filter(
-      (user) => user != item,
+      (product) => product.id !== item.id,
     );
   }
 

@@ -1,7 +1,7 @@
-import { IBuyer, ValidationErrors, TPayment } from "../../../types/index.ts";
+import { IBuyer, ValidationErrors, TPayment } from "../../types/index.ts";
 
 export class Customer {
-  customer: IBuyer;
+  private customer: IBuyer;
 
   constructor() {
     this.customer = { payment: "", email: "", phone: "", address: "" };
