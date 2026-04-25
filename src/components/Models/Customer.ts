@@ -1,26 +1,31 @@
 import { IBuyer, ValidationErrors, TPayment } from "../../types/index.ts";
+import { IEvents } from "../base/Events";
 
 export class Customer {
   private customer: IBuyer;
 
-  constructor() {
+  constructor(protected events: IEvents) {
     this.customer = { payment: "", email: "", phone: "", address: "" };
   }
 
   setPaymentType(type: TPayment): void {
     this.customer.payment = type;
+    this.events.emit("customerdata:changed");
   }
 
   setEmail(email: string): void {
     this.customer.email = email;
+    this.events.emit("customerdata:changed");
   }
 
   setPhone(phone: string): void {
     this.customer.phone = phone;
+    this.events.emit("customerdata:changed");
   }
 
   setAddress(address: string): void {
     this.customer.address = address;
+    this.events.emit("customerdata:changed");
   }
 
   getCustomerData(): IBuyer {
@@ -34,6 +39,7 @@ export class Customer {
       phone: "",
       address: "",
     };
+    this.events.emit("customerdata:changed");
   }
 
   validateCustomerData(): ValidationErrors {

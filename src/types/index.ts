@@ -47,3 +47,7 @@ export interface IServer {
   total: number;
   items: IProduct[];
 }
+
+export interface ICardActions {
+  onClick() : void;
+}

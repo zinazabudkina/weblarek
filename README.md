@@ -203,3 +203,209 @@ address: string; - адрес доставки
 Методы:
 `getProducts(): Promise<IServer>` - получает с сервера данные о товарах.
 `postOrderData(data : IOrder): Promise<IOrderResponce>` - отправляет на сервер данные о заказе.
+
+### Слой представления
+
+#### Класс Header
+
+Класс отвечает за отображение шапки сайта.
+
+Конструктор:
+`constructor(protected events : IEvents, container: HTMLElement)` - принимает ссылку на DOM-элемент и брокер событий
+
+Поля класса:
+`cartButton : HTMLButtonElement` - кнопка корзины заказов
+`counterElement : HTMLElement` - счетчик заказов корзины
+
+Методы:
+`set counter(value : number)` - меняет счетчик заказов корзины.
+
+#### Класс Gallery
+
+Класс отвечает за отображение галереи товаров.
+
+Конструктор:
+`constructor(container: HTMLElement)` - принимает ссылку на DOM-элемент и брокер событий
+
+Поля класса:
+`catalogElement : HTMLElement` - каталог товаров
+
+Методы:
+`set catalog(items : HTMLElement[])` - получает массив карточек товаров.
+
+#### Класс Modal
+
+Класс отвечает за отображение модального окна.
+
+Конструктор:
+`constructor(container: HTMLElement)` - принимает ссылку на DOM-элемент и брокер событий
+
+Поля класса:
+`modal : HTMLElement` - модальное окно
+`modalElement : HTMLElement` - содержимое модального окна
+`modalCloseButton : HTMLButtonElement` - кнопка закрытия модального окна
+
+Методы:
+`set content(value : HTMLElement)` - получает контент модального окна.
+`close() : void` - закрывает модальное окно.
+`open() : void` - открывает модальное окно.
+
+#### Класс Card
+
+Является родительским классом для всех карточек товаров.
+
+Конструктор:
+`constructor(container: HTMLElement)` - принимает ссылку на DOM-элемент и брокер событий
+
+Поля класса:
+`titleElement : HTMLElement` - название товара
+`priceElement : HTMLElement` - цена товара
+
+Методы:
+
+`set title(value : string)` - отображает название товара.
+`set price(value : number)` - отображает цену товара.
+
+#### Класс OrderSuccess
+
+Конструктор:
+`constructor(protected events : IEvents, container: HTMLElement)` - принимает ссылку на DOM-элемент и брокер событий
+
+Поля класса:
+`orderDescriptionElement : HTMLElement` - показывает общую сумму сделанной покупки
+`orderSuccessCloseButton : HTMLButtonElement` - кнопка возврата к каталогу товаров
+
+Методы:
+`set price(value : number)` - получает общую сумму сделанной покупки.
+
+#### Класс CardCatalog
+
+Конструктор:
+`constructor(actions? : ICardActions, container: HTMLElement)` - принимает ссылку на DOM-элемент и функцию обработки событий
+
+Поля класса:
+`imageElement : HTMLImageElement` - картинка товара
+`categoryElement : HTMLElement` - категория товара
+
+Методы:
+`set image(value : string)` - отображает картинку товара.
+`set category(value : string)` - отображает категорию товара.
+
+#### Класс CardPreview
+
+Конструктор:
+`constructor(protected events : IEvents, container: HTMLElement)` - принимает ссылку на DOM-элемент и функцию обработки событий
+
+Поля класса:
+`imageElement : HTMLImageElement` - картинка товара
+`categoryElement : HTMLElement` - категория товара
+`descriptionElement : HTMLElement` - описание товара
+`orderButtonElement : HTMLButtonElement` - кнопка добавления товара в корзину
+
+Методы:
+`set image(value : string)` - отображает картинку товара.
+`set category(value : string)` - отображает категорию товара.
+`set description(value : string)` - отображает описание товара.
+`unpricedButton() : void` - меняет отображение кнопки заказа для карточки без цены.
+`deleteButton() : void` - меняет отображение кнопки заказа после добавления карточки в корзину.
+`orderButton() : void` - меняет отображение кнопки заказа после удаления карточки из корзины.
+`buttonDisabled(value: boolean) : void` - делает кнопку неактивной
+
+#### Класс CardBasket
+
+Конструктор:
+`constructor(actions? : ICardActions, container: HTMLElement)` - принимает ссылку на DOM-элемент и функцию обработки событий
+
+Поля класса:
+`indexElement : HTMLElement` - индекс товара
+`deleteButtonElement : HTMLButtonElement` - кнопка удаления товара из корзины
+
+Методы:
+`set index(value : number)` - отображает индекс товара.
+
+#### Класс Basket
+
+Конструктор:
+`constructor(protected events : IEvents, container: HTMLElement)` - принимает ссылку на DOM-элемент и брокер событий
+
+Поля класса:
+`bascetListElement : HTMLElement` - список товаров в корзине
+`orderButtonElement : HTMLButtonElement` - кнопка перехода к оформлению заказа
+`totalPriceElement : HTMLElement` - суммарная цена товаров в корзине
+
+Методы:
+`set basketlist(basket : HTMLElement[])` - отображает список товаров в корзине.
+`set totalprice(value : number)` - отображает суммарную цену товаров в корзине.
+`buttonDisabled(value: boolean) : void` - делает кнопку заказа неактивной
+
+#### Класс Form
+
+Является родительским классом всех форм.
+
+Конструктор:
+`constructor(protected events : IEvents, container: HTMLElement)` - принимает ссылку на DOM-элемент и брокер событий
+
+Поля класса:
+`submitButton : HTMLButtonElement` - кнопка перехода на следующую форму
+`errorElement : HTMLElement` - поле для вывода ошибок
+
+Методы:
+`set error(value: string)` - отображает ошибку формы.
+
+#### Класс FormOrder
+
+Конструктор:
+`constructor(protected events : IEvents, container: HTMLElement)` - принимает ссылку на DOM-элемент и брокер событий
+
+Поля класса:
+`payCardButton : HTMLButtonElement` - кнопка оплаты картой
+`payCashButton : HTMLButtonElement` - кнопка оплаты наличными
+`addressElement : HTMLInputElement` - адрес доставки
+
+Методы:
+`set address(address : string)` - отображает введенный адрес.
+`buttonDisabled(value: boolean)` - делает кнопку заказа неактивной.
+`buttonUnclicked()` - убирает класс выбора кнопки типа оплаты.
+
+#### Класс FormContacts
+
+Конструктор:
+`constructor(protected events : IEvents, container: HTMLElement)` - принимает ссылку на DOM-элемент и брокер событий
+
+Поля класса:
+`emailElement : HTMLInputElement` - почта клиента
+`phoneElement : HTMLInputElement` - телефон клиента
+
+Методы:
+`set email(email : string)` - отображает введенный емейл.
+`set phone(phone : string)` - отображает введенный номер.
+`buttonDisabled(value: boolean)` - делает кнопку заказа неактивной.
+
+### События
+
+#### События слоя Представления
+
+"basket:open" - нажатие кнопки открытия корзины
+"card:select" - выбор карточки для просмотра
+"cardbutton:click" - клик на кнопку в превью карточки (добавить или удалить товар из корзины)
+"cardbasket:delete" - клик по кнопке удаления товара в открытой корзине
+"form:open" - клик на кнопку Оформить в корзине
+"pay:card" - клик по кнопке оплаты онлайн
+"pay:cash" - клик по кнопке оплаты наличными
+"input:address" - ввод адреса
+"input:email" - ввод емейла
+"input:phone" - ввод номера
+"order:submit" - клик по кнопке перехода с первой формы на вторую
+"contacts:submit" - клик отправки второй формы
+"success:close" - клик по кнопке на экране успешного заказа
+
+#### События Модели данных
+
+"basket:changed" - изменение корзины
+"productlist:changed" - изменение каталога товаров
+"selectedproduct:changed" - изменение выбранного для просмотра товара
+"customerdata:changed" - изменение данных клиента
+
+#### Presenter
+
+Код презентера осуществлен в файле main.ts и представляет собой обработчик событий.
