@@ -306,10 +306,10 @@ address: string; - адрес доставки
 `set image(value : string)` - отображает картинку товара.
 `set category(value : string)` - отображает категорию товара.
 `set description(value : string)` - отображает описание товара.
-`unpricedButton() : void` - меняет отображение кнопки заказа для карточки без цены.
-`deleteButton() : void` - меняет отображение кнопки заказа после добавления карточки в корзину.
-`orderButton() : void` - меняет отображение кнопки заказа после удаления карточки из корзины.
-`buttonDisabled(value: boolean) : void` - делает кнопку неактивной
+`makeButtonUnpriced() : void` - меняет отображение кнопки заказа для карточки без цены.
+`makeButtonDelete() : void` - меняет отображение кнопки заказа после добавления карточки в корзину.
+`makeButtonOrder() : void` - меняет отображение кнопки заказа после удаления карточки из корзины.
+`makeButtonDisabled(value: boolean) : void` - делает кнопку неактивной
 
 #### Класс CardBasket
 
@@ -336,7 +336,7 @@ address: string; - адрес доставки
 Методы:
 `set basketlist(basket : HTMLElement[])` - отображает список товаров в корзине.
 `set totalprice(value : number)` - отображает суммарную цену товаров в корзине.
-`buttonDisabled(value: boolean) : void` - делает кнопку заказа неактивной
+`makeButtonDisabled(value: boolean) : void` - делает кнопку заказа неактивной
 
 #### Класс Form
 
@@ -351,6 +351,7 @@ address: string; - адрес доставки
 
 Методы:
 `set error(value: string)` - отображает ошибку формы.
+`makeButtonDisabled(value: boolean)` - делает кнопку заказа неактивной.
 
 #### Класс FormOrder
 
@@ -364,8 +365,7 @@ address: string; - адрес доставки
 
 Методы:
 `set address(address : string)` - отображает введенный адрес.
-`buttonDisabled(value: boolean)` - делает кнопку заказа неактивной.
-`buttonUnclicked()` - убирает класс выбора кнопки типа оплаты.
+`makeButtonUnclicked()` - убирает класс выбора кнопки типа оплаты.
 
 #### Класс FormContacts
 
@@ -379,7 +379,6 @@ address: string; - адрес доставки
 Методы:
 `set email(email : string)` - отображает введенный емейл.
 `set phone(phone : string)` - отображает введенный номер.
-`buttonDisabled(value: boolean)` - делает кнопку заказа неактивной.
 
 ### События
 

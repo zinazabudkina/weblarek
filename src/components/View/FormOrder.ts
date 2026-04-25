@@ -39,8 +39,9 @@ export class FormOrder extends Form<IFormOrder> {
       this.events.emit("pay:cash");
     });
 
-    this.addressElement.addEventListener("input", (e) => {
-      this.events.emit("input:address", e);
+    this.addressElement.addEventListener("input", (e: InputEvent) => {
+      const target = e.target as HTMLInputElement;
+      this.events.emit("input:address", [target.value]);
     });
   }
 
@@ -58,11 +59,7 @@ export class FormOrder extends Form<IFormOrder> {
     this.addressElement.value = address;
   }
 
-  buttonDisabled(value: boolean) {
-    this.submitButton.disabled = value;
-  }
-
-  buttonUnclicked() {
+  makeButtonUnclicked() {
     this.payCashButton.classList.remove("button_alt-active");
     this.payCardButton.classList.remove("button_alt-active");
   }

@@ -44,7 +44,7 @@ export class Basket extends Component<IBasket> {
     this.totalPriceElement.textContent = `${value} синапсов`;
   }
 
-  buttonDisabled(value: boolean) {
+  makeButtonDisabled(value: boolean) {
     this.orderButtonElement.disabled = value;
   }
 }

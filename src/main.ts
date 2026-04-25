@@ -79,9 +79,9 @@ events.on("basket:open", () => {
     content: basket.render(),
   });
   if (cart.getPurchasedProductList().length === 0) {
-    basket.buttonDisabled(true);
+    basket.makeButtonDisabled(true);
   } else {
-    basket.buttonDisabled(false);
+    basket.makeButtonDisabled(false);
   }
   modal.open();
 });
@@ -97,15 +97,15 @@ events.on("selectedproduct:changed", () => {
       content: cardpreview.render(item),
     });
     if (cart.getItemAvailability(item.id)) {
-      cardpreview.deleteButton();
+      cardpreview.makeButtonDelete();
     } else {
-      cardpreview.orderButton();
+      cardpreview.makeButtonOrder();
     }
     if (!item.price) {
-      cardpreview.buttonDisabled(true);
-      cardpreview.unpricedButton();
+      cardpreview.makeButtonDisabled(true);
+      cardpreview.makeButtonUnpriced();
     } else {
-      cardpreview.buttonDisabled(false);
+      cardpreview.makeButtonDisabled(false);
     }
   }
   modal.open();
@@ -143,9 +143,9 @@ events.on("basket:changed", () => {
     totalprice: cart.getTotalCost(),
   });
   if (cart.getPurchasedProductList().length === 0) {
-    basket.buttonDisabled(true);
+    basket.makeButtonDisabled(true);
   } else {
-    basket.buttonDisabled(false);
+    basket.makeButtonDisabled(false);
   }
 });
 
@@ -155,7 +155,9 @@ events.on("cardbasket:delete", (e: IProduct) => {
 
 events.on("form:open", () => {
   modal.render({
-    content: formorder.render(),
+    content: formorder.render({
+      error: "",
+    }),
   });
   modal.open();
 });
@@ -168,90 +170,91 @@ events.on("pay:cash", () => {
   customer.setPaymentType("cash");
 });
 
-events.on("input:address", (e: InputEvent) => {
-  const target = e.target as HTMLInputElement;
-  customer.setAddress(target.value);
+events.on("input:address", (e: string[]) => {
+  customer.setAddress(e[0]);
 });
 
-events.on("input:email", (e: InputEvent) => {
-  const target = e.target as HTMLInputElement;
-  customer.setEmail(target.value);
+events.on("input:email", (e: string[]) => {
+  customer.setEmail(e[0]);
 });
 
-events.on("input:phone", (e: InputEvent) => {
-  const target = e.target as HTMLInputElement;
-  customer.setPhone(target.value);
+events.on("input:phone", (e: string[]) => {
+  customer.setPhone(e[0]);
 });
 
 events.on("customerdata:changed", () => {
   const validate = customer.validateCustomerData();
 
-  let error = "";
-  if (validate.payment) {
-    if (validate.address) {
-      error = "Не выбран вид оплаты и не введен адрес";
-    }
-
-    error = validate.payment;
-  } else if (validate.address) {
-    error = validate.address;
+  const orderErrors = [validate.address, validate.payment]
+    .filter(Boolean)
+    .join("; ");
+  if (orderErrors.length === 0) {
+    formorder.makeButtonDisabled(false);
   } else {
-    formorder.buttonDisabled(false);
+    formorder.makeButtonDisabled(true);
+  }
+
+  const contactsErrors = [validate.email, validate.phone]
+    .filter(Boolean)
+    .join("; ");
+  if (contactsErrors.length === 0) {
+    formcontacts.makeButtonDisabled(false);
+  } else {
+    formcontacts.makeButtonDisabled(true);
   }
 
   formorder.render({
     payment: customer.getCustomerData().payment,
     address: customer.getCustomerData().address,
-    error: error,
+    error: orderErrors,
   });
-  if (validate.email) {
-    if (validate.phone) {
-      error = "Не введен номер телефона и емейл";
-    }
-    error = validate.email;
-  } else if (validate.phone) {
-    error = validate.phone;
-  } else {
-    formcontacts.buttonDisabled(false);
-  }
+
   formcontacts.render({
     email: customer.getCustomerData().email,
     phone: customer.getCustomerData().phone,
-    error: error,
+    error: contactsErrors,
   });
 });
 
 events.on("order:submit", () => {
   modal.render({
-    content: formcontacts.render(),
+    content: formcontacts.render({
+      error: "",
+    }),
   });
   modal.open();
 });
 
 events.on("contacts:submit", () => {
   const buyed: string[] = [];
-  modal.render({
-    content: ordersuccess.render({
-      totalprice: cart.getTotalCost(),
-    }),
-  });
-  modal.open();
+
   cart.getPurchasedProductList().forEach((item) => {
     buyed.push(item.id);
   });
 
-  server.postOrderData({
-    payment: customer.getCustomerData().payment,
-    email: customer.getCustomerData().email,
-    phone: customer.getCustomerData().phone,
-    address: customer.getCustomerData().address,
-    total: cart.getTotalCost(),
-    items: buyed,
-  });
+  server
+    .postOrderData({
+      payment: customer.getCustomerData().payment,
+      email: customer.getCustomerData().email,
+      phone: customer.getCustomerData().phone,
+      address: customer.getCustomerData().address,
+      total: cart.getTotalCost(),
+      items: buyed,
+    })
+    .then((result) => {
+      const total = result.total;
+      modal.render({
+        content: ordersuccess.render({
+          totalprice: total,
+        }),
+      });
+      modal.open();
+    })
+    .catch((err) => console.log(err));
 
   cart.deleteAllPurchasedProducts();
   customer.deleteCustomerData();
-  formorder.buttonUnclicked();
+  formorder.makeButtonUnclicked();
 });
 
 events.on("success:close", () => {

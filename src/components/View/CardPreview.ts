@@ -69,19 +69,19 @@ export class CardPreview extends Card<ICardPreview> {
     this.descriptionElement.textContent = value;
   }
 
-  unpricedButton() {
+  makeButtonUnpriced() {
     this.orderButtonElement.textContent = "Недоступно";
   }
 
-  deleteButton() {
+  makeButtonDelete() {
     this.orderButtonElement.textContent = "Удалить из корзины";
   }
 
-  orderButton() {
+  makeButtonOrder() {
     this.orderButtonElement.textContent = "Купить";
   }
 
-  buttonDisabled(value: boolean) {
+  makeButtonDisabled(value: boolean) {
     this.orderButtonElement.disabled = value;
   }
 }

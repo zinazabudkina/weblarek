@@ -26,11 +26,13 @@ export class FormContacts extends Form<IFormContacts> {
       this.container,
     );
 
-    this.emailElement.addEventListener("input", (e) => {
-      this.events.emit("input:email", e);
+    this.emailElement.addEventListener("input", (e: InputEvent) => {
+      const target = e.target as HTMLInputElement;
+      this.events.emit("input:email", [target.value]);
     });
-    this.phoneElement.addEventListener("input", (e) => {
-      this.events.emit("input:phone", e);
+    this.phoneElement.addEventListener("input", (e: InputEvent) => {
+      const target = e.target as HTMLInputElement;
+      this.events.emit("input:phone", [target.value]);
     });
   }
 
@@ -40,9 +42,5 @@ export class FormContacts extends Form<IFormContacts> {
 
   set phone(phone: string) {
     this.phoneElement.value = phone;
-  }
-
-  buttonDisabled(value: boolean) {
-    this.submitButton.disabled = value;
   }
 }

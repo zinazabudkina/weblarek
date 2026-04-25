@@ -34,4 +34,8 @@ export class Form<T> extends Component<IForm & T> {
   set error(value: string) {
     this.errorElement.textContent = value;
   }
+
+  makeButtonDisabled(value: boolean) {
+    this.submitButton.disabled = value;
+  }
 }
